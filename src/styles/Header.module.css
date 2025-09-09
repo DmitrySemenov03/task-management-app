@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 40px;
+  background-color: #c4d6e0;
+  align-items: center;
+  padding: 5px 15px;
+}
+
+.name {
+  align-items: center;
+  display:flex;
+  gap: 15px;
+}
+
+.logoImage {
+  width: 40px;
+}
+
+.regLinks {
+  display: flex;
+  gap: 10px;
+}
+
+.loginLink, .registerLink{
+  padding: 10px;
+  background-color: #111;
+}
+

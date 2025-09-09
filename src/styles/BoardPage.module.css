@@ -1,0 +1,14 @@
+.board {
+  display: flex;
+  justify-content: space-around;
+  border: 2px solid #313131;
+  margin: 10px;
+  padding: 20px;
+  height: 90vh;
+}
+
+.column {
+  width: 30%;
+  border: 1px solid #303030;
+  padding: 10px;
+}
