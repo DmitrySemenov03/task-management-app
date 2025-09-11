@@ -1,6 +1,90 @@
-.container {
-  max-width: 1200px;
+.home {
+  font-family: Arial, sans-serif;
+  color: #1f1f1f;
+  background-color: #fafafa;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, #6a4c93, #92749d);
+  color: white;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 600px;
   margin: 0 auto;
-  background-color: #f1f1f1;
-  height: 100vh;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.ctaButton {
+  display: inline-block;
+  background-color: #ffdd57;
+  color: #1f1f1f;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.ctaButton:hover {
+  background-color: #ffc107;
+}
+
+/* Features */
+.features {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.features h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.featureCard h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+/* Footer */
+.footer {
+  background: #1f1f1f;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
 }

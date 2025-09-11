@@ -1,0 +1,97 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 40px;
+  width: 320px;
+
+  background-color: rgba(20, 20, 30, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+
+  animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.loginInput {
+  background-color: #1e1e2f;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 8px;
+  height: 42px;
+  padding: 0 12px;
+}
+
+.loginInput::placeholder {
+  color: #888;
+}
+
+.loginInput:focus {
+  border: 1px solid #7b61ff;
+  box-shadow: 0 0 6px rgba(123, 97, 255, 0.6);
+}
+
+.btn {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  height: 42px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.errorMsg {
+  font-size: 14px;
+  color: #ffabab;
+  text-align: center;
+}
+
+.loginAsk {
+  font-size: 14px;
+  color: #bbb;
+  text-align: center;
+}
+
+.alternativeLink {
+  display: inline-block;
+  margin-top: 5px;
+  text-decoration: none;
+  color: #7b61ff;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.alternativeLink:hover {
+  color: #9d85ff;
+}

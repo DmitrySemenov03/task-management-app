@@ -1,0 +1,57 @@
+
+.authButtons {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.userEmail {
+  font-size: 0.9rem;
+  color: #cccccc;
+}
+
+.loginLink,
+.signupLink {
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.loginLink {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  transition: all 0.2s;
+}
+
+.loginLink:hover {
+  background: #ffffff;
+  color: #1f1f1f;
+}
+
+.signupLink {
+  background: #9a57ff;
+  color: #1f1f1f;
+  transition: background 0.2s;
+}
+
+.signupLink:hover {
+  background: #8636ff;
+}
+
+.logoutButton {
+  background: #660013;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.logoutButton:hover {
+  background: #d9363e;
+}
