@@ -1,50 +1,90 @@
-import React, { useState } from "react";
-import styles from '../styles/BoardPage.module.css'
-
-
-type TTask = {
-  id: number;
-  title: string;
-};
-
-type TColumn = {
-  id: number;
-  title: string;
-  tasks: TTask[];
-};
-
-const mockData = [
-  {
-    id: 1,
-    title: "To Do",
-    tasks: [{ id: 1, title: "Сделать лендинг" }],
-  },
-  {
-    id: 2,
-    title: "In Progress",
-    tasks: [{ id: 2, title: "Изучить Redux Toolkit" }],
-  },
-  {
-    id: 3,
-    title: "Done",
-    tasks: [],
-  },
-];
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import styles from "../styles/BoardPage.module.css";
+import { IBoard } from "../services/BoardsService";
+import { createColumn, getColumns, IColumn } from "../services/ColumnsService";
+import Column from "../components/Column";
+import CreateColumnModal from "../components/CreateColumnModal";
 
 function BoardPage() {
-  const [columns, setColumns] = useState<TColumn[]>(mockData);
+  const { boardId } = useParams<{ boardId: string }>();
+
+  const [board, setBoard] = useState<IBoard | null>(null);
+  const [columns, setColumns] = useState<IColumn[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [isColumnOpen, setIsColumnOpen] = useState(false);
+
+  useEffect(() => {
+    async function loadData() {
+      if (!boardId) return;
+
+      try {
+        // Load the board
+        const boardRef = doc(db, "boards", boardId);
+        const snapshot = await getDoc(boardRef);
+
+        if (snapshot.exists()) {
+          setBoard({
+            id: snapshot.id,
+            ...(snapshot.data() as Omit<IBoard, "id">),
+          });
+
+          // Load columns of the board
+          const data = await getColumns(boardId);
+          setColumns(data);
+        } else {
+          console.warn("Board not found");
+        }
+      } catch (err) {
+        console.error("Error loading board:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadData();
+  }, [boardId]);
+
+  async function handleCreateColumn(title: string) {
+    if (!boardId) return;
+    await createColumn(boardId, title);
+    const data = await getColumns(boardId);
+    setColumns(data);
+  }
+
+  if (loading) return <div className={styles.loading}>Loading board...</div>;
+  if (!board) return <div className={styles.notFound}>Board not found</div>;
+  if (!boardId) return null;
 
   return (
-    <div className={styles.board}>
-      {columns.map((column) => (
-        <div key={column.id} className={styles.column}>
-          <h2 className={styles.columnTitle}>{column.title}</h2>
-          {column.tasks.map((task) => (
-            <div key={task.id} className={styles.task}>{task.title}</div>
-          ))}
-          <button className={styles.addTaskBtn}>+ добавить задачу</button>
-        </div>
-      ))}
+    <div className={styles.wrapper}>
+      <h1 className={styles.title}>{board.title}</h1>
+
+      <div className={styles.columnsWrapper}>
+        {columns.length > 0 ? (
+          columns.map((col) => (
+            <Column key={col.id} column={col} boardId={boardId} />
+          ))
+        ) : (
+          <p>No columns yet</p>
+        )}
+        <button
+          className={styles.createButton}
+          onClick={() => setIsColumnOpen(true)}
+        >
+          + Add Column
+        </button>
+      </div>
+
+      <CreateColumnModal
+        isOpen={isColumnOpen}
+        onClose={() => setIsColumnOpen(false)}
+        onCreate={handleCreateColumn}
+      />
     </div>
   );
 }

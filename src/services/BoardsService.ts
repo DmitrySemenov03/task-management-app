@@ -13,7 +13,7 @@ export async function createBoard(
   title: string
 ): Promise<string | null> {
   try {
-    const boardsRef = collection(db, "boards"); // коллекция "boards"
+    const boardsRef = collection(db, "boards");
     const docRef = await addDoc(boardsRef, {
       title,
       ownerId: userId,

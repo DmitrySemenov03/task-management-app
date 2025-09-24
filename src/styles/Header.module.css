@@ -5,6 +5,8 @@
   background: #1f1f1f;
   color: #ffffff;
   padding: 10px 20px;
+  height: 10vh;
+  box-sizing: border-box;
 }
 
 .logo {

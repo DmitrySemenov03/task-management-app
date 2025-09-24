@@ -3,6 +3,7 @@ import CreateBoardModal from "../components/CreateBoardModal";
 import styles from "../styles/BoardsListPage.module.css";
 import { useAuth } from "./auth/AuthContext";
 import { createBoard, getBoards, IBoard } from "../services/BoardsService";
+import { Link } from "react-router-dom";
 
 function BoardsListPage() {
   const { user } = useAuth();
@@ -29,20 +30,27 @@ function BoardsListPage() {
 
   return (
     <div className={styles.wrapper}>
-      <button
-        className={styles.createButton}
-        onClick={() => setModalOpen(true)}
-      >
-        Add new Board
-      </button>
-
-      <ul className={styles.list}>
-        {boards && boards.map((board) => (
-          <li key={board.id} className={styles.listItem}>
-            {board.title}
-          </li>
-        ))}
-      </ul>
+      <h3 className={styles.containerTitle}>Your workspaces</h3>
+      <div className={styles.boardsContainer}>
+        <ul className={styles.list}>
+          {boards &&
+            boards.map((board) => (
+              <Link
+                key={board.id}
+                to={`/boards/${board.id}`}
+                className={styles.listItem}
+              >
+                {board.title}
+              </Link>
+            ))}
+          <button
+            className={styles.createButton}
+            onClick={() => setModalOpen(true)}
+          >
+            Create new Board
+          </button>
+        </ul>
+      </div>
 
       <CreateBoardModal
         isOpen={isModalOpen}

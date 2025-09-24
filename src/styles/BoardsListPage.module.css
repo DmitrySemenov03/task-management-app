@@ -1,32 +1,87 @@
 .wrapper {
-  padding: 24px;
-  font-family: sans-serif;
+  width: 100%;
+  height: calc(100vh - 10vh - 10vh);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+  box-sizing: border-box;
+  gap: 24px;
+  color: #e4e4e7;
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #601496 #2a2a2a;
 }
 
-.createButton {
-  background: #2563eb;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.containerTitle {
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #cfc6d3ac;
 }
 
-.createButton:hover {
-  background: #1d4ed8;
+.boardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
 }
 
 .list {
-  margin-top: 16px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
   list-style: none;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  height: 100%;
 }
 
-.listItem {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.wrapper::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+.wrapper::-webkit-scrollbar-thumb {
+  background: #8a1dd8;
+  border-radius: 4px;
+}
+
+.listItem,
+.createButton {
+  flex: 0 0 180px;
+  max-width: 100%;
+  height: 100px;
+  background: #2d2d31;
+  border: 1px solid #3e3e44;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: center;
+
+  box-sizing: border-box;
+  padding: 8px 0 0 0;
+}
+
+.listItem:hover {
+  background: #3b3b42;
+  transform: translateY(-2px);
+}
+
+.createButton {
+  color: #cccccc;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.createButton:hover {
+  transform: translateY(-2px);
+  background: #54455e;
 }

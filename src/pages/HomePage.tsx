@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   return (
     <div className={styles.home}>
-      {/* Hero section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1>Organize Your Work with Kanban Boards</h1>
@@ -12,13 +11,12 @@ export default function HomePage() {
             Manage tasks, track progress, and collaborate with your team in one
             simple and powerful tool.
           </p>
-          <Link to="/signup" className={styles.ctaButton}>
+          <Link to="/register" className={styles.ctaButton}>
             Get Started for Free
           </Link>
         </div>
       </section>
 
-      {/* Features section */}
       <section className={styles.features}>
         <h2>Why choose our Task Manager?</h2>
         <div className={styles.featureGrid}>

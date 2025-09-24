@@ -20,8 +20,8 @@ function App() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/boards" element={<BoardsListPage />} />
-            <Route path="/board/:id" element={<BoardPage />} />
-            <Route path="/board/:id/calendar" element={<CalendarPage />} />
+            <Route path="/boards/:boardId" element={<BoardPage />} />
+            <Route path="/boards/:boardId/calendar" element={<CalendarPage />} />
           </Route>
         </Route>
       </Routes>
