@@ -4,6 +4,8 @@ import CreateTaskModal from "./CreateTaskModal";
 import TaskList from "./TaskList";
 import { createTask } from "../services/TasksService";
 import styles from "../styles/Column.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 interface ColumnProps {
   column: IColumn;
@@ -26,7 +28,7 @@ export default function Column({ column, boardId }: ColumnProps) {
         className={styles.addTaskButton}
         onClick={() => setIsTaskModalOpen(true)}
       >
-        + Add Task
+        <FontAwesomeIcon icon={faPlus} /> Add new Task
       </button>
 
       <CreateTaskModal

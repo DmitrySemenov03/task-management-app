@@ -7,6 +7,9 @@ import { IBoard } from "../services/BoardsService";
 import { createColumn, getColumns, IColumn } from "../services/ColumnsService";
 import Column from "../components/Column";
 import CreateColumnModal from "../components/CreateColumnModal";
+import BoardViewDropdown from "../components/BoardViewDropdown";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function BoardPage() {
   const { boardId } = useParams<{ boardId: string }>();
@@ -62,7 +65,10 @@ function BoardPage() {
 
   return (
     <div className={styles.wrapper}>
-      <h1 className={styles.title}>{board.title}</h1>
+      <div className={styles.boardSettings}>
+        <h1 className={styles.title}>{board.title}</h1>
+        <BoardViewDropdown />
+      </div>
 
       <div className={styles.columnsWrapper}>
         {columns.length > 0 ? (
@@ -76,7 +82,7 @@ function BoardPage() {
           className={styles.createButton}
           onClick={() => setIsColumnOpen(true)}
         >
-          + Add Column
+          <FontAwesomeIcon icon={faPlus} /> Add Column
         </button>
       </div>
 
