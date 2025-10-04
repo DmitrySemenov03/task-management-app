@@ -1,33 +1,49 @@
-// src/components/TaskList.tsx
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import Task from "./Task";
 import styles from "../styles/TaskList.module.css";
-import { getTasks, ITask } from "../services/TasksService";
+import { ITask } from "../services/TasksService";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 interface TaskListProps {
+  tasks: ITask[];
   boardId: string;
   columnId: string;
+  onUpdateTask: (taskId: string, updates: Partial<ITask>) => Promise<void>;
+  onDeleteTask: (taskId: string) => Promise<void>;
 }
 
-const TaskList: FC<TaskListProps> = ({ boardId, columnId }) => {
-  const [tasks, setTasks] = useState<ITask[]>([]);
-
-  useEffect(() => {
-    async function loadTasks() {
-      const data = await getTasks(boardId, columnId);
-      setTasks(data);
-    }
-    loadTasks();
-  }, [boardId, columnId]);
-
+const TaskList: FC<TaskListProps> = ({
+  tasks,
+  boardId,
+  columnId,
+  onUpdateTask,
+  onDeleteTask,
+}) => {
   return (
-    <div className={styles.taskList}>
-      {tasks.length > 0 ? (
-        tasks.map((task) => <Task key={task.id} task={task} />)
-      ) : (
-        <p className={styles.empty}>No tasks yet</p>
-      )}
-    </div>
+    <SortableContext
+      items={tasks.map((t) => `task-${t.id}`)}
+      strategy={verticalListSortingStrategy}
+    >
+      <div className={styles.taskList}>
+        {tasks.length > 0 ? (
+          tasks.map((task) => (
+            <Task
+              key={task.id}
+              task={task}
+              boardId={boardId}
+              columnId={columnId}
+              onUpdateTask={(id, updates) => onUpdateTask(id, updates)}
+              onDeleteTask={(id) => onDeleteTask(id)}
+            />
+          ))
+        ) : (
+          <p className={styles.empty}>No tasks yet</p>
+        )}
+      </div>
+    </SortableContext>
   );
 };
 

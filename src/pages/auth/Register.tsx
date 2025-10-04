@@ -48,7 +48,7 @@ function Register() {
 
         <input
           className={styles.loginInput}
-          placeholder="Enter your password again"
+          placeholder="Repeat your password"
           value={copyPassword}
           onChange={(e) => setCopyPassword(e.target.value)}
           type="password"
@@ -64,6 +64,6 @@ function Register() {
       </form>
     </div>
   );
-}
+} 
 
 export default Register;
