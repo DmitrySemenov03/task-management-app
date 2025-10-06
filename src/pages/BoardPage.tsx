@@ -30,13 +30,11 @@ import {
   reorderLocally,
 } from "../store/slices/ColumnsSlice";
 import {
-  createTask,
-  deleteTask,
   fetchTasksForColumn,
   moveTaskBetweenColumns,
   reorderTasksLocally,
-  updateTask,
 } from "../store/slices/tasksSlice";
+import LoadingOverlay from "../components/LoadingOverlay";
 
 function BoardPage() {
   const { boardId } = useParams<{ boardId: string }>();
@@ -96,31 +94,7 @@ function BoardPage() {
     await dispatch(createColumn({ boardId, title, order: columns.length }));
   }
 
-  async function handleCreateTask(
-    columnId: string,
-    title: string,
-    description?: string
-  ) {
-    if (!boardId) return;
-    await dispatch(createTask({ boardId, columnId, title, description }));
-  }
-
-  async function handleUpdateTask(
-    columnId: string,
-    taskId: string,
-    updates: Partial<ITask>
-  ) {
-    if (!boardId) return;
-    await dispatch(updateTask({ boardId, columnId, taskId, updates }));
-  }
-
-  async function handleDeleteTask(columnId: string, taskId: string) {
-    if (!boardId) return;
-    await dispatch(deleteTask({ boardId, columnId, taskId }));
-  }
-
   // DnD logic
-
   function findColumnIdForTask(taskId: string): string | undefined {
     return Object.keys(tasksByColumn).find((colId) =>
       (tasksByColumn[colId] || []).some((t) => t.id === taskId)
@@ -171,14 +145,13 @@ function BoardPage() {
         destIndex = overTasks.findIndex((t) => t.id === overTaskId);
       } else if (overIdStr.startsWith("column-")) {
         destColId = overIdStr.replace(/^column-/, "");
-        destIndex = (tasksByColumn[destColId] || []).length; // append
+        destIndex = (tasksByColumn[destColId] || []).length;
       } else {
         return;
       }
 
       if (!destColId || destIndex === -1) return;
 
-      // if moving within same column -> local reorder
       if (sourceColId === destColId) {
         const arr = tasksByColumn[sourceColId] || [];
         const fromIndex = arr.findIndex((t) => t.id === activeTaskId);
@@ -207,7 +180,7 @@ function BoardPage() {
   }
 
   if (loading || columnsLoading)
-    return <div className={styles.loading}>Loading board...</div>;
+    return <LoadingOverlay text="Loading boards..." fullscreen={true} />;
   if (!board) return <div className={styles.notFound}>Board not found</div>;
   if (!boardId) return null;
 

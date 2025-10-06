@@ -1,0 +1,63 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  color: #d0bcff;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #bb86fc;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #ffffff;
+}
+
+.taskItem {
+  background-color: #5d31a3;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+  list-style: none;
+}
+
+.taskDescription {
+  margin-left: 10px;
+  color: #d8d8d8;
+}
+
+.empty {
+  color: #fff;
+}

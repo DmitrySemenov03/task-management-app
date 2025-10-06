@@ -1,6 +1,6 @@
-.wrapper {
+/* .wrapper {
   width: 100%;
-  height: calc(100vh - 10vh - 10vh);
+  height: 90vh;
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
@@ -84,4 +84,178 @@
 .createButton:hover {
   transform: translateY(-2px);
   background: #54455e;
+} */
+
+.wrapper {
+  width: 100%;
+  height: calc(100vh - 80px); /* учитываем header */
+  padding: 40px 24px;
+  box-sizing: border-box;
+  color: #e4e4e7;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background: #1b1b1f;
+  overflow: hidden;
+}
+
+.containerTitle {
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #cfc6d3ac;
+  letter-spacing: 1px;
+  margin-left: 10px;
+}
+
+.boardsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #601496 #2a2a2a;
+  padding:10px;
+}
+
+.boardsContainer::-webkit-scrollbar {
+  height: 8px;
+}
+.boardsContainer::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+.boardsContainer::-webkit-scrollbar-thumb {
+  background: #8a1dd8;
+  border-radius: 4px;
+}
+
+.list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(3, 1fr); /* три строки */
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* === CARD === */
+.card {
+  position: relative;
+  width: 180px;
+  height: 100px;
+  background: #2d2d31;
+  border: 1px solid #3e3e44;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 12px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #601496;
+  box-shadow: 0 4px 16px rgba(98, 0, 234, 0.25);
+}
+
+/* === BOARD TITLE LINK === */
+.listItem {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  color: #f5f5f5;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card:hover .listItem {
+  color: #c9a7ff;
+}
+
+/* === ACTION BUTTONS === */
+.actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: all 0.25s ease;
+}
+
+.card:hover .actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.editBtn,
+.deleteBtn {
+  background: #3c3c43;
+  color: #dcdcdc;
+  border: none;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+  background: #6a29b8;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  background: #8a1d1d;
+  color: #fff;
+}
+
+/* === CREATE BUTTON === */
+.createButton {
+  width: 180px;
+  height: 100px;
+  border: 2px dashed #3f3f47;
+  border-radius: 12px;
+  background: #26262a;
+  color: #a59ab1;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.createButton:hover {
+  background: #3b2e4a;
+  color: #d2c4e7;
+  border-color: #7a36cc;
+  transform: translateY(-3px);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .list {
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .card,
+  .createButton {
+    width: 160px;
+    height: 90px;
+  }
 }
