@@ -86,7 +86,7 @@ export async function updateTask(
     );
     await updateDoc(tasksRef, updates);
   } catch (err) {
-    console.error("Error", err);
+    console.error("Error editing task", err);
   }
 }
 
@@ -107,6 +107,6 @@ export async function deleteTask(
     );
     await deleteDoc(tasksRef);
   } catch (err) {
-    console.error("Error", err);
+    console.error("Error deleting task", err);
   }
 }

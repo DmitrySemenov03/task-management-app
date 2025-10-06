@@ -5,16 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useAppDispatch } from "../store/hooks";
+import { deleteTask, updateTask } from "../store/slices/tasksSlice";
 
 interface TaskProps {
   task: ITask;
   boardId: string;
   columnId: string;
-  onUpdateTask: (taskId: string, updates: Partial<ITask>) => Promise<void>;
-  onDeleteTask: (taskId: string) => Promise<void>;
 }
 
-const Task: FC<TaskProps> = ({ task, onUpdateTask, onDeleteTask }) => {
+const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
+  const dispatch = useAppDispatch();
+
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
 
@@ -36,17 +38,31 @@ const Task: FC<TaskProps> = ({ task, onUpdateTask, onDeleteTask }) => {
   };
 
   async function handleDelete() {
-    await onDeleteTask(task.id);
+    await dispatch(deleteTask({ boardId, columnId, taskId: task.id }));
   }
 
   async function handleUpdate() {
     if (!newTitle.trim()) return;
-    await onUpdateTask(task.id, { title: newTitle });
+    await dispatch(
+      updateTask({
+        boardId,
+        columnId,
+        taskId: task.id,
+        updates: { title: newTitle },
+      })
+    );
     setIsEditing(false);
   }
 
   async function toggleComplete() {
-    await onUpdateTask(task.id, { isCompleted: !task.isCompleted });
+    await dispatch(
+      updateTask({
+        boardId,
+        columnId,
+        taskId: task.id,
+        updates: { isCompleted: !task.isCompleted },
+      })
+    );
   }
 
   return (
@@ -62,7 +78,6 @@ const Task: FC<TaskProps> = ({ task, onUpdateTask, onDeleteTask }) => {
         checked={task.isCompleted || false}
         onChange={toggleComplete}
         className={styles.checkbox}
-        // onPointerDown={(e) => e.stopPropagation()}
       />
 
       {isEditing ? (

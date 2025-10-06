@@ -1,4 +1,13 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 export interface IBoard {
@@ -39,5 +48,23 @@ export async function getBoards(userId: string): Promise<IBoard[] | null> {
   } catch (error) {
     console.error(error);
     return null;
+  }
+}
+
+export async function updateBoard(boardId: string, updates: Partial<IBoard>) {
+  try {
+    const boardsRef = doc(db, "boards", boardId);
+    await updateDoc(boardsRef, updates);
+  } catch (err) {
+    console.error("Error editing column", err);
+  }
+}
+
+export async function deleteBoard(boardId: string) {
+  try {
+    const boardsRef = doc(db, "boards", boardId);
+    await deleteDoc(boardsRef);
+  } catch (err) {
+    console.error("Error deleting column", err);
   }
 }

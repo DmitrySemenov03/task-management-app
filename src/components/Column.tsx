@@ -2,30 +2,25 @@ import { FC, useState } from "react";
 import styles from "../styles/Column.module.css";
 import TaskList from "./TaskList";
 import CreateTaskModal from "./CreateTaskModal";
-import { ITask } from "../services/TasksService";
 import { IColumn } from "../services/ColumnsService";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripLines, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { createTask } from "../store/slices/tasksSlice";
 
 interface ColumnProps {
   column: IColumn;
   boardId: string;
-  tasks: ITask[];
-  onCreateTask: (title: string, description?: string) => Promise<void>;
-  onUpdateTask: (taskId: string, updates: Partial<ITask>) => Promise<void>;
-  onDeleteTask: (taskId: string) => Promise<void>;
 }
 
-const Column: FC<ColumnProps> = ({
-  column,
-  tasks,
-  boardId,
-  onCreateTask,
-  onUpdateTask,
-  onDeleteTask,
-}) => {
+const Column: FC<ColumnProps> = ({ column, boardId }) => {
+  const dispatch = useAppDispatch();
+
+  const tasks = useAppSelector(
+    (state) => state.tasks.byColumn[column.id] || []
+  );
   const {
     attributes,
     listeners,
@@ -45,8 +40,10 @@ const Column: FC<ColumnProps> = ({
 
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 
-  async function handleCreate(title: string, description?: string) {
-    await onCreateTask(title, description);
+  async function handleCreateTask(title: string, description?: string) {
+    await dispatch(
+      createTask({ boardId, columnId: column.id, title, description })
+    );
     setIsTaskModalOpen(false);
   }
 
@@ -64,13 +61,7 @@ const Column: FC<ColumnProps> = ({
         <h3 className={styles.columnTitle}>{column.title}</h3>
       </div>
 
-      <TaskList
-        tasks={tasks}
-        boardId={boardId}
-        columnId={column.id}
-        onUpdateTask={onUpdateTask}
-        onDeleteTask={onDeleteTask}
-      />
+      <TaskList tasks={tasks} boardId={boardId} columnId={column.id} />
 
       <button
         className={styles.addTaskButton}
@@ -82,7 +73,7 @@ const Column: FC<ColumnProps> = ({
       <CreateTaskModal
         isOpen={isTaskModalOpen}
         onClose={() => setIsTaskModalOpen(false)}
-        onCreate={handleCreate}
+        onCreate={handleCreateTask}
       />
     </div>
   );

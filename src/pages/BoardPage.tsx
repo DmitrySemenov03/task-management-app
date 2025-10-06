@@ -4,12 +4,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "../styles/BoardPage.module.css";
 import { IBoard } from "../services/BoardsService";
-import {
-  createColumn,
-  getColumns,
-  IColumn,
-  updateColumnOrder,
-} from "../services/ColumnsService";
 import Column from "../components/Column";
 import CreateColumnModal from "../components/CreateColumnModal";
 import BoardViewDropdown from "../components/BoardViewDropdown";
@@ -19,48 +13,50 @@ import {
   closestCorners,
   DndContext,
   DragEndEvent,
-  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
 } from "@dnd-kit/sortable";
+import { ITask } from "../services/TasksService";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import {
+  createColumn,
+  fetchColumns,
+  persistColumnsOrder,
+  reorderLocally,
+} from "../store/slices/ColumnsSlice";
 import {
   createTask,
   deleteTask,
-  getTasks,
-  ITask,
+  fetchTasksForColumn,
+  moveTaskBetweenColumns,
+  reorderTasksLocally,
   updateTask,
-} from "../services/TasksService";
-import Task from "../components/Task";
-
-type TasksByColumn = {
-  [columnId: string]: ITask[];
-};
+} from "../store/slices/tasksSlice";
 
 function BoardPage() {
   const { boardId } = useParams<{ boardId: string }>();
+  const dispatch = useAppDispatch();
 
   const [board, setBoard] = useState<IBoard | null>(null);
-  const [columns, setColumns] = useState<IColumn[]>([]);
-  const [tasksByColumn, setTasksByColumn] = useState<TasksByColumn>({});
-
   const [loading, setLoading] = useState(true);
-
   const [isColumnOpen, setIsColumnOpen] = useState(false);
-
   const [activeTask, setActiveTask] = useState<ITask | null>(null);
+
+  const columns = useAppSelector((state) => state.columns.items);
+  const columnsLoading = useAppSelector((state) => state.columns.loading);
+  const tasksByColumn = useAppSelector((state) => state.tasks.byColumn);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
 
   useEffect(() => {
-    async function loadData() {
+    async function loadBoard() {
       if (!boardId) return;
 
       try {
@@ -74,20 +70,16 @@ function BoardPage() {
             ...(snapshot.data() as Omit<IBoard, "id">),
           });
 
-          // Load columns of the board
-          const columnsData = await getColumns(boardId);
-          console.log("loading columns");
-          setColumns(columnsData);
+          // Load columns of the board from Redux
+          const resultAction = await dispatch(fetchColumns(boardId));
+          const cols = resultAction.payload;
 
           // Load tasks for each column
-          const tasksObj: TasksByColumn = {};
-          await Promise.all(
-            columnsData.map(async (c) => {
-              const tasks = await getTasks(boardId, c.id);
-              tasksObj[c.id] = tasks;
-            })
-          );
-          setTasksByColumn(tasksObj);
+          if (Array.isArray(cols)) {
+            cols.forEach((col) =>
+              dispatch(fetchTasksForColumn({ boardId, columnId: col.id }))
+            );
+          }
         }
       } catch (err) {
         console.error("Error loading board:", err);
@@ -95,8 +87,14 @@ function BoardPage() {
         setLoading(false);
       }
     }
-    loadData();
-  }, [boardId]);
+
+    loadBoard();
+  }, [boardId, dispatch]);
+
+  async function handleCreateColumn(title: string) {
+    if (!boardId) return;
+    await dispatch(createColumn({ boardId, title, order: columns.length }));
+  }
 
   async function handleCreateTask(
     columnId: string,
@@ -104,22 +102,7 @@ function BoardPage() {
     description?: string
   ) {
     if (!boardId) return;
-
-    const taskId = await createTask(boardId, columnId, title, description);
-    if (!taskId) return;
-
-    const newTask: ITask = {
-      id: taskId,
-      title,
-      description: description || "",
-      isCompleted: false,
-      createdAt: Date.now(),
-    };
-
-    setTasksByColumn((prev) => ({
-      ...prev,
-      [columnId]: [...(prev[columnId] || []), newTask],
-    }));
+    await dispatch(createTask({ boardId, columnId, title, description }));
   }
 
   async function handleUpdateTask(
@@ -128,42 +111,23 @@ function BoardPage() {
     updates: Partial<ITask>
   ) {
     if (!boardId) return;
-    await updateTask(boardId, columnId, taskId, updates);
-
-    setTasksByColumn((prev) => {
-      const colTasks = prev[columnId] || [];
-      return {
-        ...prev,
-        [columnId]: colTasks.map((t) =>
-          t.id === taskId ? { ...t, ...updates } : t
-        ),
-      };
-    });
+    await dispatch(updateTask({ boardId, columnId, taskId, updates }));
   }
 
   async function handleDeleteTask(columnId: string, taskId: string) {
     if (!boardId) return;
-    await deleteTask(boardId, columnId, taskId);
-
-    setTasksByColumn((prev) => {
-      const colTasks = prev[columnId] || [];
-      return {
-        ...prev,
-        [columnId]: colTasks.filter((t) => t.id !== taskId),
-      };
-    });
-  }
-
-  async function handleCreateColumn(title: string) {
-    if (!boardId) return;
-    const order = columns.length;
-    await createColumn(boardId, title, order);
-    const data = await getColumns(boardId);
-    setColumns(data);
+    await dispatch(deleteTask({ boardId, columnId, taskId }));
   }
 
   // DnD logic
-  function handleDragEnd(event: DragEndEvent) {
+
+  function findColumnIdForTask(taskId: string): string | undefined {
+    return Object.keys(tasksByColumn).find((colId) =>
+      (tasksByColumn[colId] || []).some((t) => t.id === taskId)
+    );
+  }
+
+  async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
 
@@ -177,23 +141,23 @@ function BoardPage() {
       );
       const newIndex = columns.findIndex((c) => `column-${c.id}` === overIdStr);
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+      dispatch(reorderLocally({ from: oldIndex, to: newIndex }));
 
-      const reordered = arrayMove(columns, oldIndex, newIndex);
-      setColumns(reordered);
-
-      if (!boardId) return;
-      reordered.forEach(async (col, index) => {
-        await updateColumnOrder(boardId, col.id, index);
-      });
+      // сохраняем порядок в БД
+      await dispatch(
+        persistColumnsOrder({
+          boardId: boardId!,
+          ordered: columns.map((c, i) => ({ id: c.id, order: i })),
+        })
+      );
+      return;
     }
 
     // Drag tasks
     if (activeIdStr.startsWith("task-")) {
       const activeTaskId = activeIdStr.replace(/^task-/, "");
 
-      const sourceColId = Object.keys(tasksByColumn).find((colId) =>
-        (tasksByColumn[colId] || []).some((t) => t.id === activeTaskId)
-      );
+      const sourceColId = findColumnIdForTask(activeTaskId);
       if (!sourceColId) return;
 
       let destColId: string | null = null;
@@ -201,50 +165,49 @@ function BoardPage() {
 
       if (overIdStr.startsWith("task-")) {
         const overTaskId = overIdStr.replace(/^task-/, "");
-        destColId =
-          Object.keys(tasksByColumn).find((colId) =>
-            (tasksByColumn[colId] || []).some((t) => t.id === overTaskId)
-          ) || null;
-
+        destColId = findColumnIdForTask(overTaskId) ?? null;
         if (!destColId) return;
         const overTasks = tasksByColumn[destColId] || [];
         destIndex = overTasks.findIndex((t) => t.id === overTaskId);
       } else if (overIdStr.startsWith("column-")) {
         destColId = overIdStr.replace(/^column-/, "");
-        destIndex = (tasksByColumn[destColId] || []).length;
+        destIndex = (tasksByColumn[destColId] || []).length; // append
+      } else {
+        return;
       }
 
       if (!destColId || destIndex === -1) return;
 
-      setTasksByColumn((prev) => {
-        const next: TasksByColumn = structuredClone(prev);
+      // if moving within same column -> local reorder
+      if (sourceColId === destColId) {
+        const arr = tasksByColumn[sourceColId] || [];
+        const fromIndex = arr.findIndex((t) => t.id === activeTaskId);
+        if (fromIndex === -1) return;
 
-        const sourceArr = next[sourceColId] || [];
+        dispatch(
+          reorderTasksLocally({
+            columnId: sourceColId,
+            from: fromIndex,
+            to: destIndex,
+          })
+        );
+        return;
+      }
 
-        if (!destColId) return prev;
-        const destArr = next[destColId] || [];
-
-        const sourceIndex = sourceArr.findIndex((t) => t.id === activeTaskId);
-        if (sourceIndex === -1) return prev;
-
-        const [moved] = sourceArr.splice(sourceIndex, 1);
-        if (!moved) return prev;
-
-        let insertIndex = destIndex;
-        if (sourceColId === destColId && sourceIndex < destIndex) {
-          insertIndex = destIndex - 1;
-        }
-
-        destArr.splice(insertIndex, 0, moved);
-        next[sourceColId] = [...sourceArr];
-        next[destColId] = [...destArr];
-
-        return { ...next };
-      });
+      await dispatch(
+        moveTaskBetweenColumns({
+          boardId: boardId!,
+          fromColumnId: sourceColId,
+          toColumnId: destColId,
+          taskId: activeTaskId,
+          destIndex,
+        })
+      );
     }
   }
 
-  if (loading) return <div className={styles.loading}>Loading board...</div>;
+  if (loading || columnsLoading)
+    return <div className={styles.loading}>Loading board...</div>;
   if (!board) return <div className={styles.notFound}>Board not found</div>;
   if (!boardId) return null;
 
@@ -278,21 +241,7 @@ function BoardPage() {
           <div className={styles.columnsWrapper}>
             {columns.length > 0 ? (
               columns.map((col) => (
-                <Column
-                  key={col.id}
-                  column={col}
-                  boardId={boardId}
-                  tasks={tasksByColumn[col.id] || []}
-                  onCreateTask={async (title, desc) =>
-                    handleCreateTask(col.id, title, desc)
-                  }
-                  onUpdateTask={async (taskId, updates) =>
-                    handleUpdateTask(col.id, taskId, updates)
-                  }
-                  onDeleteTask={async (taskId) =>
-                    handleDeleteTask(col.id, taskId)
-                  }
-                />
+                <Column key={col.id} column={col} boardId={boardId} />
               ))
             ) : (
               <p>No lists yet</p>

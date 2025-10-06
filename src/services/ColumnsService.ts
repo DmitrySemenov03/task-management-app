@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   updateDoc,
@@ -76,5 +77,30 @@ export async function updateColumnOrder(
     await updateDoc(columnRef, { order });
   } catch (err) {
     console.error("Error updating column order:", err);
+  }
+}
+
+export async function updateColumn(
+  boardId: string,
+  columnId: string,
+  updates: Partial<IColumn>
+) {
+  try {
+    const columnRef = doc(db, "boards", boardId, "columns", columnId);
+    await updateDoc(columnRef, updates);
+  } catch (err) {
+    console.error("Error editing column", err);
+  }
+}
+
+export async function deleteColumn(
+  boardId: string,
+  columnId: string,
+) {
+  try {
+    const columnRef = doc(db, "boards", boardId, "columns", columnId);
+    await deleteDoc(columnRef);
+  } catch (err) {
+    console.error("Error deleting column", err);
   }
 }
