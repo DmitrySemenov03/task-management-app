@@ -95,8 +95,10 @@
   outline: none;
 }
 
-.dragging {
+/* .dragging {
   background-color: #34067e9b;
   opacity: 0.4;
-  transform: rotate(2deg);
-}
+  transform: rotate(3deg) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+} */

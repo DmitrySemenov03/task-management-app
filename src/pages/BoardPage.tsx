@@ -4,7 +4,12 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import styles from "../styles/BoardPage.module.css";
 import { IBoard } from "../services/BoardsService";
-import { createColumn, getColumns, IColumn } from "../services/ColumnsService";
+import {
+  createColumn,
+  getColumns,
+  IColumn,
+  updateColumnOrder,
+} from "../services/ColumnsService";
 import Column from "../components/Column";
 import CreateColumnModal from "../components/CreateColumnModal";
 import BoardViewDropdown from "../components/BoardViewDropdown";
@@ -14,6 +19,7 @@ import {
   closestCorners,
   DndContext,
   DragEndEvent,
+  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
@@ -30,6 +36,7 @@ import {
   ITask,
   updateTask,
 } from "../services/TasksService";
+import Task from "../components/Task";
 
 type TasksByColumn = {
   [columnId: string]: ITask[];
@@ -45,6 +52,8 @@ function BoardPage() {
   const [loading, setLoading] = useState(true);
 
   const [isColumnOpen, setIsColumnOpen] = useState(false);
+
+  const [activeTask, setActiveTask] = useState<ITask | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
@@ -147,12 +156,13 @@ function BoardPage() {
 
   async function handleCreateColumn(title: string) {
     if (!boardId) return;
-    await createColumn(boardId, title);
+    const order = columns.length;
+    await createColumn(boardId, title, order);
     const data = await getColumns(boardId);
     setColumns(data);
   }
 
-  // ---- DnD handler (central) ----
+  // DnD logic
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
@@ -160,30 +170,32 @@ function BoardPage() {
     const activeIdStr = String(active.id);
     const overIdStr = String(over.id);
 
-    // --- 1) Drag columns ---
+    // Drag columns
     if (activeIdStr.startsWith("column-") && overIdStr.startsWith("column-")) {
       const oldIndex = columns.findIndex(
         (c) => `column-${c.id}` === activeIdStr
       );
       const newIndex = columns.findIndex((c) => `column-${c.id}` === overIdStr);
-      if (oldIndex === -1 || newIndex === -1) return;
-      if (oldIndex !== newIndex) {
-        setColumns((prev) => arrayMove(prev, oldIndex, newIndex));
-      }
-      return;
+      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
+
+      const reordered = arrayMove(columns, oldIndex, newIndex);
+      setColumns(reordered);
+
+      if (!boardId) return;
+      reordered.forEach(async (col, index) => {
+        await updateColumnOrder(boardId, col.id, index);
+      });
     }
 
-    // --- 2) Drag tasks ---
+    // Drag tasks
     if (activeIdStr.startsWith("task-")) {
       const activeTaskId = activeIdStr.replace(/^task-/, "");
 
-      // find source column id
       const sourceColId = Object.keys(tasksByColumn).find((colId) =>
         (tasksByColumn[colId] || []).some((t) => t.id === activeTaskId)
       );
       if (!sourceColId) return;
 
-      // determine destination column id and index
       let destColId: string | null = null;
       let destIndex = -1;
 
@@ -193,24 +205,24 @@ function BoardPage() {
           Object.keys(tasksByColumn).find((colId) =>
             (tasksByColumn[colId] || []).some((t) => t.id === overTaskId)
           ) || null;
-        if (!destColId) return;
 
+        if (!destColId) return;
         const overTasks = tasksByColumn[destColId] || [];
         destIndex = overTasks.findIndex((t) => t.id === overTaskId);
-        if (destIndex === -1) return;
       } else if (overIdStr.startsWith("column-")) {
         destColId = overIdStr.replace(/^column-/, "");
-        // append to end of column
         destIndex = (tasksByColumn[destColId] || []).length;
-      } else {
-        return;
       }
 
-      setTasksByColumn((prev) => {
-        const next = { ...prev };
+      if (!destColId || destIndex === -1) return;
 
-        const sourceArr = [...(next[sourceColId] || [])];
-        const destArr = [...(next[destColId!] || [])];
+      setTasksByColumn((prev) => {
+        const next: TasksByColumn = structuredClone(prev);
+
+        const sourceArr = next[sourceColId] || [];
+
+        if (!destColId) return prev;
+        const destArr = next[destColId] || [];
 
         const sourceIndex = sourceArr.findIndex((t) => t.id === activeTaskId);
         if (sourceIndex === -1) return prev;
@@ -224,11 +236,10 @@ function BoardPage() {
         }
 
         destArr.splice(insertIndex, 0, moved);
+        next[sourceColId] = [...sourceArr];
+        next[destColId] = [...destArr];
 
-        next[sourceColId] = sourceArr;
-        next[destColId!] = destArr;
-
-        return next;
+        return { ...next };
       });
     }
   }
@@ -246,6 +257,17 @@ function BoardPage() {
 
       <DndContext
         sensors={sensors}
+        onDragStart={(event) => {
+          const id = String(event.active.id);
+          if (id.startsWith("task-")) {
+            const taskId = id.replace(/^task-/, "");
+            const found = Object.values(tasksByColumn)
+              .flat()
+              .find((t) => t.id === taskId);
+            if (found) setActiveTask(found);
+          }
+        }}
+        onDragCancel={() => setActiveTask(null)}
         onDragEnd={handleDragEnd}
         collisionDetection={closestCorners}
       >
@@ -284,7 +306,6 @@ function BoardPage() {
           </div>
         </SortableContext>
       </DndContext>
-
       <CreateColumnModal
         isOpen={isColumnOpen}
         onClose={() => setIsColumnOpen(false)}

@@ -31,7 +31,7 @@ const TaskList: FC<TaskListProps> = ({
         {tasks.length > 0 ? (
           tasks.map((task) => (
             <Task
-              key={task.id}
+              key={`task-${task.id}`}
               task={task}
               boardId={boardId}
               columnId={columnId}
