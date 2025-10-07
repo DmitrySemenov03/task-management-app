@@ -8,23 +8,37 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  function login(e: FormEvent) {
+  async function login(e: FormEvent) {
     e.preventDefault();
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        navigate("/boards");
-        setEmail("");
-        setPassword("");
-        setError("");
-      })
-      .catch((error) => {
-        console.log(error);
-        setError("Couldn`t find the account!");
-      });
+    if (!email || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      setEmail("");
+      setPassword("");
+      setError("");
+      navigate("/boards");
+    } catch (err: any) {
+      console.error(err);
+      if (err.code === "auth/invalid-credential") {
+        setError("Incorrect email or password.");
+      } else if (err.code === "auth/user-not-found") {
+        setError("Account not found.");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -36,19 +50,26 @@ function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
+          required
         />
+
         <input
           className={styles.loginInput}
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
+          required
         />
 
-        <button className={styles.btn}>Log In</button>
+        <button className={styles.btn} disabled={loading}>
+          {loading ? "Logging in..." : "Log In"}
+        </button>
+
         {error && <p className={styles.errorMsg}>{error}</p>}
-        <div>
-          <p className={styles.loginAsk}>Don`t have an account?</p>
+
+        <div className={styles.altSection}>
+          <p className={styles.loginAsk}>Don’t have an account?</p>
           <Link to="/register" className={styles.alternativeLink}>
             Sign Up
           </Link>

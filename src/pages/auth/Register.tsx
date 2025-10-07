@@ -1,36 +1,56 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FormEvent, useState } from "react";
 import { auth } from "../../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/Register.module.css";
 
 function Register() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [copyPassword, setCopyPassword] = useState("");
   const [error, setError] = useState("");
 
-  function register(e: FormEvent) {
+  const navigate = useNavigate();
+
+  async function register(e: FormEvent) {
     e.preventDefault();
     if (password !== copyPassword) {
       setError("Passwords didn`t match!");
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((user) => {
-        console.log(user);
-        setEmail("");
-        setPassword("");
-        setCopyPassword("");
-        setError("");
-      })
-      .catch((error) => console.log(error));
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: username,
+        });
+      }
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setCopyPassword("");
+      setError("");
+      navigate("/boards");
+    } catch (error: any) {
+      console.error(error);
+      setError(error.message);
+    }
   }
 
   return (
     <div className={styles.signup}>
       <form onSubmit={register} className={styles.form}>
+        <input
+          className={styles.loginInput}
+          placeholder="Enter your name"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          type="text"
+          required
+        />
         <input
           className={styles.loginInput}
           placeholder="Enter your email"
@@ -64,6 +84,6 @@ function Register() {
       </form>
     </div>
   );
-} 
+}
 
 export default Register;

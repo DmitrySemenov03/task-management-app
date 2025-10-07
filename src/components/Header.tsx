@@ -9,16 +9,18 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
-        <Link to="/" className={styles.logoLink}>
-          <img src={logoImage} alt="logotype" />
-          Daily`s
-        </Link>
-      </div>
+      <div className={styles.leftPart}>
+        <div className={styles.logo}>
+          <Link to="/" className={styles.logoLink}>
+            <img src={logoImage} alt="logotype" />
+            Daily`s
+          </Link>
+        </div>
 
-      <nav className={styles.nav}>
-        {user && <Link to="/boards">Boards</Link>}
-      </nav>
+        <nav className={styles.nav}>
+          {user && <Link to="/boards">Boards</Link>}
+        </nav>
+      </div>
       <AuthBar />
     </header>
   );

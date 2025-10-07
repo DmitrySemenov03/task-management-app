@@ -58,6 +58,7 @@
   color: #e4e4e7;
   border: none;
   cursor: pointer;
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.5px;
   transition: all 0.2s ease-in-out;
@@ -68,37 +69,4 @@
   background-color: #6f1fa6;
   transform: translateY(-2px);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
-}
-
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80vh;
-  color: #c9a7ff;
-  font-size: 22px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px rgba(138, 29, 216, 0.6);
-  animation: glowPulse 2s ease-in-out infinite;
-  background: radial-gradient(circle at center, #1c1c21 0%, #0f0f12 100%);
-  border-radius: 12px;
-}
-
-@keyframes glowPulse {
-  0% {
-    text-shadow: 0 0 8px rgba(138, 29, 216, 0.6),
-      0 0 15px rgba(138, 29, 216, 0.3);
-    color: #c9a7ff;
-  }
-  50% {
-    text-shadow: 0 0 16px rgba(138, 29, 216, 0.9),
-      0 0 25px rgba(138, 29, 216, 0.5);
-    color: #e0bfff;
-  }
-  100% {
-    text-shadow: 0 0 8px rgba(138, 29, 216, 0.6),
-      0 0 15px rgba(138, 29, 216, 0.3);
-    color: #c9a7ff;
-  }
 }

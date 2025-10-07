@@ -6,33 +6,49 @@ export default function HomePage() {
     <div className={styles.home}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <h1>Organize Your Work with Kanban Boards</h1>
+          <h1>Plan. Track. Create.</h1>
           <p>
-            Manage tasks, track progress, and collaborate with your team in one
-            simple and powerful tool.
+            Streamline your projects and stay focused. Create boards, organize
+            tasks, and turn ideas into results — all in one place.
           </p>
           <Link to="/register" className={styles.ctaButton}>
-            Get Started for Free
+            Start Now
           </Link>
         </div>
       </section>
 
       <section className={styles.features}>
-        <h2>Why choose our Task Manager?</h2>
+        <h2>Everything you need to stay organized</h2>
         <div className={styles.featureGrid}>
           <div className={styles.featureCard}>
-            <h3>📋 Simple Kanban</h3>
-            <p>Visualize your workflow with drag-and-drop boards.</p>
+            <h3>Flexible Boards</h3>
+            <p>
+              Build workflows that fit your process. Drag, drop, and reorder
+              tasks effortlessly.
+            </p>
           </div>
           <div className={styles.featureCard}>
-            <h3>🤝 Team Collaboration</h3>
-            <p>Share boards with teammates and track progress together.</p>
+            <h3>Team Collaboration</h3>
+            <p>
+              Keep your team aligned with shared boards and real-time updates.
+            </p>
           </div>
           <div className={styles.featureCard}>
-            <h3>📊 Productivity Insights</h3>
-            <p>See detailed stats and improve your workflow efficiency.</p>
+            <h3>Performance Overview</h3>
+            <p>
+              Track progress and discover bottlenecks with clear visual
+              insights.
+            </p>
           </div>
         </div>
+      </section>
+
+      <section className={styles.ctaSection}>
+        <h2>Ready to boost your productivity?</h2>
+        <p>Join now and experience a smoother way to manage your projects.</p>
+        <Link to="/register" className={styles.ctaButtonAlt}>
+          Get Started
+        </Link>
       </section>
     </div>
   );

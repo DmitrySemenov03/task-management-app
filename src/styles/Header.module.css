@@ -35,13 +35,16 @@
   width: 50px;
 }
 
-.nav {
+.leftPart{
   display: flex;
-  justify-content: flex-start;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
 }
 
 .nav a {
+  border: 1px solid #b485f9;
+  border-radius: 8px;
+  padding: 10px 15px;
   text-decoration: none;
   color: #ffffff;
   font-size: 1rem;
@@ -49,5 +52,6 @@
 }
 
 .nav a:hover {
-  color: #9a57ff;
+  border: 1px solid #c4a1f9;
+  color: #c4a1f9;
 }

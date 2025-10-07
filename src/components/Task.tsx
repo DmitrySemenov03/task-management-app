@@ -33,8 +33,9 @@ const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
 
   const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
-    transition,
-    zIndex: isDragging ? 999 : undefined,
+    transition: isDragging ? "none" : transition,
+    zIndex: isDragging ? 2000 : undefined,
+    willChange: "transform",
   };
 
   async function handleDelete() {

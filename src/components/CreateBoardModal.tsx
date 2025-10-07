@@ -27,7 +27,7 @@ const CreateBoardModal: FC<CreateBoardModalProps> = ({
   return (
     <>
       <Modal isOpen={isOpen} onCLose={onClose}>
-        <h4 className={styles.title}>Create your Board</h4>
+        <h3 className={styles.title}>Create your Board</h3>
         <form onSubmit={handleSubmit} className={styles.form}>
           <input
             type="text"

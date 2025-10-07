@@ -13,6 +13,7 @@ import {
   closestCorners,
   DndContext,
   DragEndEvent,
+  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
@@ -227,6 +228,30 @@ function BoardPage() {
             </button>
           </div>
         </SortableContext>
+        <DragOverlay dropAnimation={null}>
+          {activeTask ? (
+            <div
+              style={{
+                transform: "rotate(1deg)",
+                cursor: "grabbing",
+                width: "230px",
+              }}
+            >
+              <div
+                style={{
+                  background: "#7c3aed",
+                  color: "#fff",
+                  padding: "10px 14px",
+                  borderRadius: "10px",
+                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)",
+                  fontSize: "16px",
+                }}
+              >
+                {activeTask.title}
+              </div>
+            </div>
+          ) : null}
+        </DragOverlay>
       </DndContext>
       <CreateColumnModal
         isOpen={isColumnOpen}

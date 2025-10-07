@@ -1,11 +1,4 @@
 .task {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.task {
   position: relative;
   display: flex;
   align-items: center;
@@ -16,9 +9,13 @@
   border-radius: 10px;
   color: #e4e4e7;
   font-size: 1rem;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  overflow: hidden;
+  cursor: grab;
+  transition: transform 0.6s ease, box-shadow 0.12s ease;
+  box-sizing: border-box;
+}
+.task.dragging {
+  opacity: 0;
+  cursor: grabbing;
 }
 
 .task:hover {
@@ -54,7 +51,7 @@
 
 .completed {
   text-decoration: line-through;
-  color: #9ca3af;
+  color: #96ae87;
 }
 
 .actions {
@@ -95,10 +92,24 @@
   outline: none;
 }
 
-/* .dragging {
-  background-color: #34067e9b;
-  opacity: 0.4;
-  transform: rotate(3deg) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  cursor: grabbing;
-} */
+/* overlay copy that follows pointer */
+.taskOverlay {
+  pointer-events: none;
+  z-index: 3000;
+  display: inline-block;
+}
+
+.taskOverlayInner {
+  background: linear-gradient(135deg, #6b3fa0, #3b2e4a);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+  transform: translateZ(0);
+  min-width: 180px;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}

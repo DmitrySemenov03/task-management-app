@@ -11,15 +11,17 @@
 }
 
 .input {
-  border: 1px solid #ccc;
   border-radius: 8px;
   padding: 8px 12px;
   font-size: 14px;
   outline: none;
+  background-color: #15171d;
+  color: #e0e0e0;
+  border: 1px solid #444;
 }
 
 .input:focus {
-  border-color: #2563eb;
+  border-color: #81748a;
 }
 
 .actions {
@@ -41,7 +43,7 @@
 }
 
 .create {
-  background: #2563eb;
+  background: #6025eb;
   color: white;
   border: none;
   border-radius: 8px;
