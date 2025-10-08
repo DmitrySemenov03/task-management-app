@@ -5,9 +5,12 @@ import styles from "../styles/AuthBar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../context/ThemeContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import defaultAvatar from "../assets/defaultUser.png";
 
 function AuthBar() {
-  const { user, logout } = useAuth();
+  const { user, logout, photoURL } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -44,7 +47,11 @@ function AuthBar() {
         onClick={() => setMenuOpen(!menuOpen)}
         className={styles.userButton}
       >
-        <img src="#" alt="userPhotoIcon" className={styles.userPhotoIcon} />
+        <img
+          src={photoURL || defaultAvatar}
+          alt="User"
+          className={styles.userPhotoIcon}
+        />
         {displayName}
         <span className={`${styles.arrow} ${menuOpen ? styles.open : ""}`}>
           <FontAwesomeIcon icon={faChevronDown} />
@@ -53,6 +60,9 @@ function AuthBar() {
 
       {menuOpen && (
         <div className={styles.dropdown}>
+          <Link to="/profile" className={styles.menuItem}>
+            Profile
+          </Link>
           <Link to="/boards" className={styles.menuItem}>
             My Boards
           </Link>

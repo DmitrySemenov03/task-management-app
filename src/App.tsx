@@ -9,6 +9,7 @@ import Register from "./pages/auth/Register";
 import PrivateRoute from "./pages/auth/PrivateRoute";
 import Layout from "./components/Layout";
 import NotFoundPage from "./components/NotFoundPage";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -22,7 +23,11 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/boards" element={<BoardsListPage />} />
             <Route path="/boards/:boardId" element={<BoardPage />} />
-            <Route path="/boards/:boardId/calendar" element={<CalendarPage />} />
+            <Route
+              path="/boards/:boardId/calendar"
+              element={<CalendarPage />}
+            />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFoundPage />}></Route>
           </Route>
         </Route>
