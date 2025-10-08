@@ -1,14 +1,14 @@
 .home {
-  color: #e4e4e7;
-  background-color: #121212;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-main);
   font-family: "Inter", system-ui, sans-serif;
   overflow-x: hidden;
 }
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #4a148c, #6a1b9a);
-  color: #ffffff;
+  background: var(--color-bg-gradient);
+  color: var(--color-text-primary);
   padding: 120px 20px;
   text-align: center;
 }
@@ -27,13 +27,13 @@
 .hero p {
   font-size: 1.25rem;
   margin-bottom: 40px;
-  color: #e0e0e0;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
 .ctaButton {
-  background-color: #ffcc33;
-  color: #1f1f1f;
+  background-color: var(--color-accent-bright);
+  color: var(--color-bg-main);
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 600;
@@ -43,7 +43,7 @@
 }
 
 .ctaButton:hover {
-  background-color: #fdd835;
+  background-color: var(--color-accent-hover);
   transform: translateY(-2px);
 }
 
@@ -51,14 +51,14 @@
 .features {
   padding: 100px 20px;
   text-align: center;
-  background-color: #18181b;
+  background-color: var(--color-bg-surface-alt);
 }
 
 .features h2 {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 60px;
-  color: #f5f5f5;
+  color: var(--color-text-heading);
 }
 
 .featureGrid {
@@ -70,35 +70,35 @@
 }
 
 .featureCard {
-  background: #1f1f23;
+  background: var(--color-bg-surface);
   padding: 28px;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-light);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-align: left;
 }
 
 .featureCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-medium);
 }
 
 .featureCard h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #ffffff;
+  color: var(--color-text-primary);
 }
 
 .featureCard p {
-  color: #cfcfcf;
+  color: var(--color-text-secondary);
   line-height: 1.6;
   font-size: 1rem;
 }
 
 .ctaSection {
-  background: linear-gradient(135deg, #2c0a4a, #4a148c);
-  color: #ffffff;
+  background: var(--color-bg-gradient);
+  color: var(--color-text-primary);
   text-align: center;
   padding: 100px 20px;
 }
@@ -111,13 +111,13 @@
 .ctaSection p {
   font-size: 1.1rem;
   margin-bottom: 40px;
-  color: #e0e0e0;
+  color: var(--color-text-secondary);
 }
 
 .ctaButtonAlt {
   display: inline-block;
-  background-color: #ffcc33;
-  color: #1f1f1f;
+  background-color: var(--color-accent-bright);
+  color: var(--color-bg-main);
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 600;
@@ -126,6 +126,6 @@
 }
 
 .ctaButtonAlt:hover {
-  background-color: #fdd835;
+  background-color: var(--color-accent-hover);
   transform: translateY(-2px);
 }

@@ -2,11 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1f1f1f;
-  color: #ffffff;
+  background: var(--color-bg-surface-alt);
+  color: var(--color-text-primary);
   padding: 10px 20px;
   height: 10vh;
   box-sizing: border-box;
+  box-shadow: var(--shadow-light);
 }
 
 .logo {
@@ -14,11 +15,12 @@
   align-items: center;
   gap: 10px;
   padding: 0 10px 0 0;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
 
 .logo:hover {
-  background-color: rgba(161, 161, 161, 0.078);
-  border-radius: 8px;
+  background-color: rgba(161, 161, 161, 0.08);
 }
 
 .logoLink {
@@ -26,7 +28,7 @@
   align-items: center;
   gap: 5px;
   text-decoration: none;
-  color: #9a57ff;
+  color: var(--color-accent);
   font-weight: bold;
   font-size: 2rem;
 }
@@ -35,23 +37,23 @@
   width: 50px;
 }
 
-.leftPart{
+.leftPart {
   display: flex;
   align-items: center;
   gap: 30px;
 }
 
 .nav a {
-  border: 1px solid #b485f9;
+  border: 1px solid var(--color-accent-light);
   border-radius: 8px;
   padding: 10px 15px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--color-text-primary);
   font-size: 1rem;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .nav a:hover {
-  border: 1px solid #c4a1f9;
-  color: #c4a1f9;
+  border: 1px solid var(--color-accent-bright);
+  color: var(--color-accent-light);
 }

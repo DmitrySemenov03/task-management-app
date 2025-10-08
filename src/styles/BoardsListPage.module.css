@@ -3,18 +3,18 @@
   height: 90vh;
   padding: 40px 24px;
   box-sizing: border-box;
-  color: #e4e4e7;
+  color: var(--color-text-primary);
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: #1b1b1f;
+  background: var(--color-bg-main);
   overflow: hidden;
 }
 
 .containerTitle {
   font-size: 20px;
   text-transform: uppercase;
-  color: #cfc6d3ac;
+  color: var(--color-text-heading);
   letter-spacing: 1px;
   margin-left: 10px;
 }
@@ -25,7 +25,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #601496 #2a2a2a;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
   padding: 10px;
 }
 
@@ -33,11 +33,11 @@
   height: 8px;
 }
 .boardsContainer::-webkit-scrollbar-track {
-  background: #2a2a2a;
+  background: var(--color-scrollbar-track);
   border-radius: 4px;
 }
 .boardsContainer::-webkit-scrollbar-thumb {
-  background: #8a1dd8;
+  background: var(--color-scrollbar-thumb);
   border-radius: 4px;
 }
 
@@ -55,11 +55,11 @@
   position: relative;
   width: 180px;
   height: 100px;
-  background: #2d2d31;
-  border: 1px solid #3e3e44;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-light);
   transition: all 0.25s ease;
   overflow: hidden;
   display: flex;
@@ -70,8 +70,8 @@
 
 .card:hover {
   transform: translateY(-3px);
-  border-color: #601496;
-  box-shadow: 0 4px 16px rgba(98, 0, 234, 0.25);
+  border-color: var(--color-scrollbar-thumb);
+  box-shadow: var(--shadow-strong)
 }
 
 .listItem {
@@ -80,7 +80,7 @@
   align-items: flex-start;
   justify-content: flex-start;
   text-align: left;
-  color: #f5f5f5;
+  color: var(--color-text-primary);
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
@@ -91,7 +91,7 @@
 }
 
 .card:hover .listItem {
-  color: #c9a7ff;
+  color: var(--color-accent-light);
 }
 
 .actions {
@@ -113,8 +113,8 @@
 
 .editBtn,
 .deleteBtn {
-  background: #3c3c43;
-  color: #dcdcdc;
+  background: var(--color-btn-bg);
+  color: var(--color-btn-text);
   border: none;
   border-radius: 6px;
   padding: 3px 8px;
@@ -124,22 +124,22 @@
 }
 
 .editBtn:hover {
-  background: #6a29b8;
+  background: var(--color-btn-edit);
   color: #fff;
 }
 
 .deleteBtn:hover {
-  background: #8a1d1d;
+  background: var(--color-btn-delete);
   color: #fff;
 }
 
 .createButton {
   width: 180px;
   height: 100px;
-  border: 2px dashed #3f3f47;
+  border: 2px dashed var(--color-border);
   border-radius: 12px;
-  background: #26262a;
-  color: #a59ab1;
+  background: var(--color-btn-bg);
+  color: var(--color-text-secondary);
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -149,9 +149,7 @@
 }
 
 .createButton:hover {
-  background: #3b2e4a;
-  color: #d2c4e7;
-  border-color: #7a36cc;
+  background: var(--color-accent-create);
+  border: 2px dashed var(--color-border);
   transform: translateY(-3px);
 }
-

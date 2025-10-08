@@ -4,21 +4,21 @@
   padding: 20px 40px;
   box-sizing: border-box;
   gap: 24px;
-  color: #e4e4e7;
-  background: linear-gradient(135deg, #472560, #37194d, #471e65);
+  color: var(--color-text-primary);
+  background: var(--color-bg-gradient);
   display: flex;
   flex-direction: column;
 }
 
 .boardSettings {
-  background: rgba(24, 23, 23, 0.6);
+  background: var(--color-bg-overlay);
   padding: 12px 24px;
   display: flex;
   align-items: center;
   gap: 30px;
   border-radius: 12px;
   backdrop-filter: blur(4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-medium);
 }
 
 .title {
@@ -35,10 +35,9 @@
   border-radius: 12px;
   padding: 20px;
   background: rgba(24, 23, 23, 0.3);
-
   overflow-x: auto;
   scrollbar-width: thin;
-  scrollbar-color: #601496 #2a2a2a;
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
 }
 
 .loading,
@@ -46,27 +45,27 @@
   font-size: 1.4rem;
   text-align: center;
   margin-top: 50px;
-  color: #c7c7d1;
+  color: var(--color-text-secondary);
 }
 
 .createButton {
   max-height: 40px;
   min-width: 250px;
-  background-color: #7e2ac4;
+  background-color: var(--color-accent);
   border-radius: 10px;
   padding: 10px 20px;
-  color: #e4e4e7;
+  color: var(--color-text-primary);
   border: none;
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.5px;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-light);
 }
 
 .createButton:hover {
-  background-color: #6f1fa6;
+  background-color: var(--color-accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-strong);
 }

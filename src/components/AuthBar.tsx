@@ -4,11 +4,14 @@ import { Link } from "react-router-dom";
 import styles from "../styles/AuthBar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from "../context/ThemeContext";
 
 function AuthBar() {
   const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const { theme, toggleTheme } = useTheme();
 
   const displayName = user?.displayName || user?.email;
 
@@ -53,7 +56,9 @@ function AuthBar() {
           <Link to="/boards" className={styles.menuItem}>
             My Boards
           </Link>
-          <button className={styles.menuItem}>Switch Theme</button>
+          <button onClick={toggleTheme} className={styles.menuItem}>
+            {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          </button>
           <hr className={styles.divider} />
           <button onClick={logout} className={styles.logout}>
             Logout
