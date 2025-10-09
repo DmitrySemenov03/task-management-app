@@ -26,7 +26,7 @@ const CreateColumnModal: FC<CreateColumnModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onCLose={onClose}>
-      <h4 className={styles.title}>Create Column</h4>
+      <h4 className={styles.title}>Create List</h4>
       <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"

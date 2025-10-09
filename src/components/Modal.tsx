@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import styles from "../styles/Modal.module.css";
 
 interface ModalProps {

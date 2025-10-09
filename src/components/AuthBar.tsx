@@ -5,8 +5,6 @@ import styles from "../styles/AuthBar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../context/ThemeContext";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
 import defaultAvatar from "../assets/defaultUser.png";
 
 function AuthBar() {

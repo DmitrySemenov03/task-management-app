@@ -45,7 +45,6 @@ export const createTask = createAsyncThunk(
   }) => {
     const id = await createTaskService(boardId, columnId, title, description);
     if (!id) throw new Error("Failed to create task");
-    // createdAt/service already sets createdAt; but we can create object locally
     return {
       columnId,
       task: {

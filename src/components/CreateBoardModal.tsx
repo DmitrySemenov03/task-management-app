@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import Modal from "./Modal";
-import styles from '../styles/CreateBoardModal.module.css'
+import styles from "../styles/CreateBoardModal.module.css";
 
 interface CreateBoardModalProps {
   isOpen: boolean;

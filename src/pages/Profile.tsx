@@ -23,7 +23,7 @@ function Profile() {
 
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file || !user) return;
+    if (!file) return;
 
     setUploading(true);
 
@@ -32,11 +32,7 @@ function Profile() {
       const base64 = reader.result as string;
       try {
         const userRef = doc(db, "users", user.uid);
-        await setDoc(
-          userRef,
-          { photoURL: base64, email: user.email },
-          { merge: true }
-        );
+        await setDoc(userRef, { photoURL: base64 }, { merge: true });
         setLocalPhoto(base64);
         setGlobalPhoto(base64);
       } catch (error) {
@@ -54,8 +50,6 @@ function Profile() {
   };
 
   const handleRemovePhoto = async () => {
-    if (!user) return;
-
     try {
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, { photoURL: null }, { merge: true });

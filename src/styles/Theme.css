@@ -36,6 +36,40 @@
   --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.25);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-strong: 0 6px 14px rgba(0, 0, 0, 0.5);
+
+  /* Login colors */
+  --login-bg: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  --login-form-bg: rgba(20, 20, 30, 0.95);
+  --login-input-bg: #1e1e2f;
+  --login-input-focus-border: #7b61ff;
+  --login-input-focus-shadow: rgba(123, 97, 255, 0.6);
+  --login-btn-bg: linear-gradient(135deg, #6a11cb, #2575fc);
+  --login-btn-hover: linear-gradient(135deg, #2575fc, #6a11cb);
+  --login-btn-text: #fff;
+  --login-error-color: #ffabab;
+  --login-ask-color: #bbb;
+  --login-link-color: #7b61ff;
+  --login-link-hover: #9d85ff;
+  --login-forgot-color: #7b61ff;
+  --login-forgot-hover: #9d85ff;
+  --login-success-color: #90ee90;
+
+  /* Register colors */
+  --register-bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --register-form-bg: rgba(15, 20, 25, 0.95);
+  --register-input-bg: #1c1f26;
+  --register-input-focus-border: #34d399;
+  --register-input-focus-shadow: rgba(52, 211, 153, 0.6);
+  --register-btn-bg: linear-gradient(135deg, #11998e, #38ef7d);
+  --register-btn-hover: linear-gradient(135deg, #38ef7d, #11998e);
+  --register-btn-text: #fff;
+  --register-error-color: #ffabab;
+  --register-ask-color: #bbb;
+  --register-link-color: #34d399;
+  --register-link-hover: #6ee7b7;
+  --register-forgot-color: #34d399;
+  --register-forgot-hover: #6ee7b7;
+  --register-success-color: #90ee90;
 }
 
 /* Light version */
@@ -70,4 +104,36 @@
   --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-strong: 0 6px 14px rgba(0, 0, 0, 0.12);
+
+  --login-bg: linear-gradient(135deg, #c2d7ff, #77abff, #e2ebf9);
+  --login-form-bg: #ffffff;
+  --login-input-bg: #f1f4f8;
+  --login-input-focus-border: #4a7aff;
+  --login-input-focus-shadow: rgba(74, 122, 255, 0.6);
+  --login-btn-bg: linear-gradient(135deg, #4a7aff, #3b6af7);
+  --login-btn-hover: linear-gradient(135deg, #3b6af7, #4a7aff);
+  --login-btn-text: #fff;
+  --login-error-color: #e15b5b;
+  --login-ask-color: #3f3f3f;
+  --login-link-color: #4a7aff;
+  --login-link-hover: #5f8bff;
+  --login-forgot-color: #4a7aff;
+  --login-forgot-hover: #5f8bff;
+  --login-success-color: #28a745;
+
+  --register-bg: linear-gradient(135deg, #d4f4f1, #a8f0e0, #f0f7f5);
+  --register-form-bg: #ffffff;
+  --register-input-bg: #f1f4f8;
+  --register-input-focus-border: #34c3a1;
+  --register-input-focus-shadow: rgba(52, 195, 161, 0.6);
+  --register-btn-bg: linear-gradient(135deg, #34c3a1, #2aa88f);
+  --register-btn-hover: linear-gradient(135deg, #2aa88f, #34c3a1);
+  --register-btn-text: #fff;
+  --register-error-color: #e15b5b;
+  --register-ask-color: #3f3f3f;
+  --register-link-color: #34c3a1;
+  --register-link-hover: #5ce0c5;
+  --register-forgot-color: #34c3a1;
+  --register-forgot-hover: #5ce0c5;
+  --register-success-color: #28a745;
 }

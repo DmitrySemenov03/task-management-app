@@ -16,7 +16,6 @@ const BoardViewDropdown: React.FC = () => {
     setIsOpen(false);
   };
 
-  // Закрытие при клике вне компонента
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (

@@ -42,7 +42,6 @@ const CalendarPage: React.FC = () => {
     });
   }, [boardId, columns, dispatch]);
 
-  // Формируем календарь с задачами
   useEffect(() => {
     const start = startOfMonth(new Date());
     const end = endOfMonth(new Date());

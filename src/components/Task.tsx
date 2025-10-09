@@ -12,9 +12,10 @@ interface TaskProps {
   task: ITask;
   boardId: string;
   columnId: string;
+  openTaskModal: (task: ITask) => void;
 }
 
-const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
+const Task: FC<TaskProps> = ({ task, boardId, columnId, openTaskModal }) => {
   const dispatch = useAppDispatch();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -73,12 +74,16 @@ const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
       className={`${styles.task} ${isDragging ? styles.dragging : ""}`}
       {...attributes}
       {...listeners}
+      onClick={() => openTaskModal(task)}
     >
       <input
         type="checkbox"
         checked={task.isCompleted || false}
-        onChange={toggleComplete}
+        onChange={(e) => {
+          toggleComplete();
+        }}
         className={styles.checkbox}
+        onClick={(e) => e.stopPropagation()}
       />
 
       {isEditing ? (
@@ -91,6 +96,7 @@ const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
           className={styles.editInput}
           autoFocus
           onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
         />
       ) : (
         <span className={task.isCompleted ? styles.completed : ""}>
@@ -101,6 +107,7 @@ const Task: FC<TaskProps> = ({ task, boardId, columnId }) => {
       <div
         className={styles.actions}
         onPointerDown={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         <button onClick={() => setIsEditing(true)} className={styles.editBtn}>
           <FontAwesomeIcon icon={faPenToSquare} />

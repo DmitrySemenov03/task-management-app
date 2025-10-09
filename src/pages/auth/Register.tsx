@@ -1,8 +1,10 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FormEvent, useState } from "react";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/Register.module.css";
+import { doc, setDoc } from "firebase/firestore";
+import defaultAvatar from "../../assets/defaultUser.png";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -21,12 +23,24 @@ function Register() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       if (auth.currentUser) {
         await updateProfile(auth.currentUser, {
           displayName: username,
         });
       }
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        email: user.email,
+        displayName: username || "Anonymous User",
+        photoURL: defaultAvatar,
+        createdAt: new Date(),
+      });
 
       setUsername("");
       setEmail("");
@@ -35,7 +49,6 @@ function Register() {
       setError("");
       navigate("/boards");
     } catch (error: any) {
-      console.error(error);
       setError(error.message);
     }
   }

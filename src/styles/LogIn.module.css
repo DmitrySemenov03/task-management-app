@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background: var(--login-bg);
 }
 
 .form {
@@ -12,46 +12,33 @@
   gap: 15px;
   padding: 40px;
   width: 320px;
-
-  background-color: rgba(20, 20, 30, 0.95);
+  background-color: var(--login-form-bg);
   border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-
+  box-shadow: var(--shadow-strong);
   animation: fadeIn 0.6s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 .loginInput {
-  background-color: #1e1e2f;
-  color: #e0e0e0;
-  border: 1px solid #444;
+  background-color: var(--login-input-bg);
+  color: var(--color-btn-text);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   height: 42px;
   padding: 0 12px;
 }
 
 .loginInput::placeholder {
-  color: #888;
+  color: var(--color-text-heading);
 }
 
 .loginInput:focus {
-  border: 1px solid #7b61ff;
-  box-shadow: 0 0 6px rgba(123, 97, 255, 0.6);
+  border: 1px solid var(--login-input-focus-border);
+  box-shadow: 0 0 6px var(--login-input-focus-shadow);
 }
 
 .btn {
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  color: white;
+  background: var(--login-btn-bg);
+  color: var(--login-btn-text);
   border: none;
   border-radius: 8px;
   height: 42px;
@@ -62,7 +49,7 @@
 }
 
 .btn:hover {
-  background: linear-gradient(135deg, #2575fc, #6a11cb);
+  background: var(--login-btn-hover);
   transform: translateY(-2px);
 }
 
@@ -72,13 +59,19 @@
 
 .errorMsg {
   font-size: 14px;
-  color: #ffabab;
+  color: var(--login-error-color);
+  text-align: center;
+}
+
+.successMsg {
+  font-size: 14px;
+  color: var(--login-success-color);
   text-align: center;
 }
 
 .loginAsk {
   font-size: 14px;
-  color: #bbb;
+  color: var(--login-ask-color);
   text-align: center;
 }
 
@@ -86,11 +79,25 @@
   display: inline-block;
   margin-top: 5px;
   text-decoration: none;
-  color: #7b61ff;
+  color: var(--login-link-color);
   font-weight: 600;
   transition: color 0.3s;
 }
 
 .alternativeLink:hover {
-  color: #9d85ff;
+  color: var(--login-link-hover);
+}
+
+.forgotBtn {
+  background: none;
+  border: none;
+  color: var(--login-forgot-color);
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: color 0.3s;
+}
+
+.forgotBtn:hover {
+  color: var(--login-forgot-hover);
 }

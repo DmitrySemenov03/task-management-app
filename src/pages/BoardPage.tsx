@@ -118,11 +118,14 @@ function BoardPage() {
       if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
       dispatch(reorderLocally({ from: oldIndex, to: newIndex }));
 
-      // сохраняем порядок в БД
+      const reordered = [...columns];
+      const [moved] = reordered.splice(oldIndex, 1);
+      reordered.splice(newIndex, 0, moved);
+
       await dispatch(
         persistColumnsOrder({
           boardId: boardId!,
-          ordered: columns.map((c, i) => ({ id: c.id, order: i })),
+          ordered: reordered.map((c, i) => ({ id: c.id, order: i })),
         })
       );
       return;
@@ -202,6 +205,8 @@ function BoardPage() {
               .flat()
               .find((t) => t.id === taskId);
             if (found) setActiveTask(found);
+          } else {
+            setActiveTask(null);
           }
         }}
         onDragCancel={() => setActiveTask(null)}
@@ -239,11 +244,11 @@ function BoardPage() {
             >
               <div
                 style={{
-                  background: "#7c3aed",
+                  background: "var(--color-accent-bright)",
                   color: "#fff",
                   padding: "10px 14px",
                   borderRadius: "10px",
-                  boxShadow: "0 4px 10px rgba(0, 0, 0, 0.4)",
+                  boxShadow: "0 4px 10px var(--shadow-medium)",
                   fontSize: "16px",
                 }}
               >
