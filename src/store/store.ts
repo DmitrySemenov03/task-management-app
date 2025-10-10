@@ -2,14 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import boardReducer from "./slices/boardSlice";
 import columnsReducer from "./slices/ColumnsSlice";
 import tasksReducer from "./slices/tasksSlice";
-import uiReducer from "./slices/uiSlice";
 
 export const store = configureStore({
   reducer: {
     board: boardReducer,
     columns: columnsReducer,
     tasks: tasksReducer,
-    ui: uiReducer,
   },
 });
 
