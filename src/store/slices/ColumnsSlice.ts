@@ -3,6 +3,8 @@ import {
   IColumn,
   createColumn as createColumnService,
   getColumns as getColumnsService,
+  updateColumn as updateColumnService,
+  deleteColumn as deleteColumnService,
   updateColumnOrder as updateColumnOrderService,
 } from "../../services/ColumnsService";
 
@@ -42,6 +44,30 @@ export const createColumn = createAsyncThunk(
     const res = await createColumnService(boardId, title, order);
     if (!res) throw new Error("Failed to create column");
     return res;
+  }
+);
+
+export const updateColumn = createAsyncThunk(
+  "columns/update",
+  async ({
+    boardId,
+    columnId,
+    updates,
+  }: {
+    boardId: string;
+    columnId: string;
+    updates: Partial<IColumn>;
+  }) => {
+    await updateColumnService(boardId, columnId, updates);
+    return { columnId, updates };
+  }
+);
+
+export const deleteColumn = createAsyncThunk(
+  "columns/delete",
+  async ({ boardId, columnId }: { boardId: string; columnId: string }) => {
+    await deleteColumnService(boardId, columnId);
+    return columnId;
   }
 );
 
@@ -91,6 +117,15 @@ const columnsSlice = createSlice({
       })
       .addCase(createColumn.fulfilled, (s, action) => {
         s.items.push(action.payload);
+      })
+      .addCase(updateColumn.fulfilled, (s, action) => {
+        const { columnId, updates } = action.payload;
+        s.items = s.items.map((c) =>
+          c.id === columnId ? { ...c, ...updates } : c
+        );
+      })
+      .addCase(deleteColumn.fulfilled, (s, action) => {
+        s.items = s.items.filter((c) => c.id !== action.payload);
       });
   },
 });

@@ -6,9 +6,10 @@ import { IColumn } from "../services/ColumnsService";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faGripLines, faPenToSquare, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { createTask } from "../store/slices/tasksSlice";
+import { deleteColumn, updateColumn } from "../store/slices/ColumnsSlice";
 
 interface ColumnProps {
   column: IColumn;
@@ -17,6 +18,10 @@ interface ColumnProps {
 
 const Column: FC<ColumnProps> = ({ column, boardId }) => {
   const dispatch = useAppDispatch();
+
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [newTitle, setNewTitle] = useState(column.title);
 
   const tasks = useAppSelector(
     (state) => state.tasks.byColumn[column.id] || []
@@ -38,13 +43,27 @@ const Column: FC<ColumnProps> = ({ column, boardId }) => {
     zIndex: isDragging ? 999 : undefined,
   };
 
-  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
   async function handleCreateTask(title: string, description?: string) {
     await dispatch(
       createTask({ boardId, columnId: column.id, title, description })
     );
     setIsTaskModalOpen(false);
+  }
+
+  async function handleUpdate() {
+    if (!newTitle.trim()) return;
+    await dispatch(
+      updateColumn({
+        boardId,
+        columnId: column.id,
+        updates: { title: newTitle },
+      })
+    );
+    setIsEditing(false);
+  }
+
+  async function handleDelete() {
+    await dispatch(deleteColumn({ boardId, columnId: column.id }));
   }
 
   return (
@@ -58,7 +77,27 @@ const Column: FC<ColumnProps> = ({ column, boardId }) => {
         >
           <FontAwesomeIcon icon={faGripLines} />
         </div>
-        <h3 className={styles.columnTitle}>{column.title}</h3>
+        {isEditing ? (
+          <input
+            type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            onBlur={handleUpdate}
+            onKeyDown={(e) => e.key === "Enter" && handleUpdate()}
+            className={styles.editInput}
+            autoFocus
+          />
+        ) : (
+          <h3 className={styles.columnTitle}>{column.title}</h3>
+        )}
+        <div className={styles.actions}>
+          <button onClick={() => setIsEditing(true)} className={styles.editBtn}>
+            <FontAwesomeIcon icon={faPenToSquare} />
+          </button>
+          <button onClick={handleDelete} className={styles.deleteBtn}>
+            <FontAwesomeIcon icon={faTrashCan} />
+          </button>
+        </div>
       </div>
 
       <TaskList tasks={tasks} boardId={boardId} columnId={column.id} />

@@ -6,7 +6,7 @@ export default function HomePage() {
     <div className={styles.home}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <h1>Plan. Track. Create.</h1>
+          <h1>Plan. Create. Track.</h1>
           <p>
             Streamline your projects and stay focused. Create boards, organize
             tasks, and turn ideas into results — all in one place.
